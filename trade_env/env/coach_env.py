@@ -113,7 +113,6 @@ class CoachEnv:
         else:
             self.loss_streak = 0
 
-        # 8. Compute reward
         reward = step_pnl - (0.1 * intr)
 
         self.t += 1
