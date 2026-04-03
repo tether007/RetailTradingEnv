@@ -1,0 +1,5 @@
+.venv
+/trade_env/__pycache__
+/trade_env/env/__pycache__
+/trade_env/tests/__pycache__
+
