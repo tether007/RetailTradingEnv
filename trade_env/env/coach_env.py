@@ -25,7 +25,7 @@ position attribute :
 """
 import random
 from enum import Enum
-
+from trade_env.schemas.action import ActionType, Action
 
 
 class Action(Enum):
@@ -60,7 +60,7 @@ class CoachEnv:
         
         return self._get_state()
     
-    def step(self,action: Action):
+    def step(self, action: Action):
         """next_step,
            reward,
            info,
@@ -68,16 +68,16 @@ class CoachEnv:
         Args:
             action (): task for the agent to take given the sensor inputs in the env present
         """
-        #pnl = (price - entry_price) * pos
+        action_type = action.action_type
         
         intr = 0
-        if(action.name=='WARN'):
+        if(action_type == ActionType.WARN):
             intr = .2
-        elif action.name == "REDUCE":
+        elif action_type == ActionType.REDUCE_SIZE:
             intr = 0.4
-        elif action.name == "EXIT":
+        elif action_type == ActionType.EXIT_POSITION:
             self.pos = 0
-        elif action.name == "COOLDOWN":
+        elif action_type == ActionType.COOLDOWN:
             intr = 1.0
             
         risk_prob = 0.5 + (0.1 * self.loss_streak)
@@ -135,6 +135,10 @@ class CoachEnv:
         return next_state, reward, done, info
     
     def _get_state(self):
-        return {self.t,self.price,self.pos,self.loss_streak,self.pnl}
-    
-        
+        return {
+            "timestep": self.t,
+            "price": self.price,
+            "position": self.pos,
+            "loss_streak": self.loss_streak,
+            "pnl": self.pnl
+        }

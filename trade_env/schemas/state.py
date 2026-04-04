@@ -6,3 +6,11 @@
     - overtrade_score(ego)
 """
 
+
+from pydantic import BaseModel
+class State(BaseModel):
+    timestep: int          
+    price: float           
+    position: int          
+    loss_streak: int      
+    pnl: float             
