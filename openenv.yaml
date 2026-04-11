@@ -1,7 +1,17 @@
-spec_version: 1
-name: trade_env
-type: space
-runtime: fastapi
-app: server.app:app
-port: 8000
-
+name: RetailTraderBehaviorCoach
+version: "1.0"
+state:
+  timestep: int
+  price: float
+  position: int
+  loss_streak: int
+  pnl: float
+actions:
+  - NO
+  - WARN
+  - REDUCE
+  - EXIT
+  - COOLDOWN
+endpoints:
+  reset: /reset
+  step: /step

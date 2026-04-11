@@ -5,3 +5,5 @@
 5. run end-to-end      
 6. add PPO agent       
 7. improve logic       
+
+`uvicorn trade_env.server.app:app --reload`

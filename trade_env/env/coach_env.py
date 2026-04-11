@@ -27,16 +27,6 @@ import random
 from enum import Enum
 from trade_env.schemas.action import ActionType, Action
 
-
-class Action(Enum):
-    
-    NO = 0
-    WARN = 1
-    REDUCE = 2
-    EXIT = 3
-    COOLDOWN = 4 #force stop for a tmframe 
-    
-
 class CoachEnv:
     
     def __init__(self):
@@ -46,6 +36,8 @@ class CoachEnv:
         self.pnl = 0
         self.loss_streak = 0
         self.pos = 0
+        self.entry_price = 100
+        
     
     def reset(self):
         """ resets the env
@@ -56,7 +48,7 @@ class CoachEnv:
         self.pnl = 0
         self.loss_streak = 0
         self.pos = 0
-        
+        self.entry_price = 100
         
         return self._get_state()
     
@@ -68,14 +60,14 @@ class CoachEnv:
         Args:
             action (): task for the agent to take given the sensor inputs in the env present
         """
-        action_type = action.action_type
+        action_type = action.action
         
         intr = 0
         if(action_type == ActionType.WARN):
             intr = .2
-        elif action_type == ActionType.REDUCE_SIZE:
+        elif action_type == ActionType.REDUCE:
             intr = 0.4
-        elif action_type == ActionType.EXIT_POSITION:
+        elif action_type == ActionType.EXIT:
             self.pos = 0
         elif action_type == ActionType.COOLDOWN:
             intr = 1.0
@@ -113,8 +105,8 @@ class CoachEnv:
         else:
             self.loss_streak = 0
 
-        reward = step_pnl - (0.1 * intr)
-
+        raw_reward = step_pnl - (0.1 * intr) - (0.5 * self.loss_streak if step_pnl < 0 else 0)
+        reward = max(-1.0, min(1.0, raw_reward / 50.0))         
         self.t += 1
         done = False
 
@@ -141,4 +133,4 @@ class CoachEnv:
             "position": self.pos,
             "loss_streak": self.loss_streak,
             "pnl": self.pnl
-        }
+        }   

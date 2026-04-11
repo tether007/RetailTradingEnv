@@ -13,4 +13,5 @@ class State(BaseModel):
     price: float           
     position: int          
     loss_streak: int      
-    pnl: float             
+    pnl: float   
+    
