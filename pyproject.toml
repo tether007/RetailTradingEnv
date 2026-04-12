@@ -5,7 +5,7 @@ description = "Retail Trader Behavior Coach - RL agent that intervenes on bad tr
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "openenv>=0.1.13",
+    "openenv-core>=0.1.13",
     "fastapi>=0.115.0",
     "uvicorn>=0.24.0",
     "pydantic>=2.0.0",
