@@ -106,7 +106,7 @@ class CoachEnv:
             self.loss_streak = 0
 
         raw_reward = step_pnl - (0.1 * intr) - (0.5 * self.loss_streak if step_pnl < 0 else 0)
-        reward = max(-1.0, min(1.0, raw_reward / 50.0))         
+        reward = max(-1.0, min(1.0, raw_reward / 5.0))      
         self.t += 1
         done = False
 
