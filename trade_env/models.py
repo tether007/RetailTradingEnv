@@ -1,27 +1,14 @@
-# Copyright (c) Meta Platforms, Inc. and affiliates.
-# All rights reserved.
-#
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-
-"""
-Data models for the Trade Env Environment.
-
-The trade_env environment is a simple test environment that echoes back messages.
-"""
-
 from openenv.core.env_server.types import Action, Observation
-from pydantic import Field,BaseModel
-
+from pydantic import Field
 
 class TradeAction(Action):
-    """Action for the Trade Env environment - just a message to echo."""
-
-    message: str = Field(..., description="Message to echo back")
-
+    action: int = Field(..., description="0=NO, 1=WARN, 2=REDUCE, 3=EXIT, 4=COOLDOWN")
 
 class TradeObservation(Observation):
-    """Observation from the Trade Env environment - the echoed message."""
-
-    echoed_message: str = Field(default="", description="The echoed message")
-    message_length: int = Field(default=0, description="Length of the echoed message")
+    timestep: int = Field(default=0)
+    price: float = Field(default=100.0)
+    position: int = Field(default=0)
+    loss_streak: int = Field(default=0)
+    pnl: float = Field(default=0.0)
+    trader_action: str = Field(default="HOLD")
+    behaviour: str = Field(default="normal")

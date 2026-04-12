@@ -111,5 +111,5 @@ class PPOAgent(nn.Module):
         self._clear_memory()
 
 if __name__ == "__main__":
-    agent = PPOAgent(state_dim=5, action_dim=5)
+    agent = PPOAgent(state_dim=6, action_dim=5)
     print("PPOAgent instantiated successfully.")

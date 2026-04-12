@@ -4,7 +4,7 @@ from trade_env.schemas.action import Action, ActionType
 from trade_env.agent.ppo_agent import PPOAgent
 
 env = CoachEnv()
-agent = PPOAgent(state_dim=5, action_dim=5)
+agent = PPOAgent(state_dim=6, action_dim=5)
 
 for episode in range(2000):
     state = env.reset()

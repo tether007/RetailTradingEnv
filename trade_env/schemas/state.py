@@ -7,11 +7,12 @@
 """
 
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+
 class State(BaseModel):
-    timestep: int          
-    price: float           
-    position: int          
-    loss_streak: int      
-    pnl: float   
-    
+    timestep: int
+    price: float
+    position: int
+    loss_streak: int
+    pnl: float
+    overtrade_score: float = Field(default=0.0, description="ego/overtrading signal 0-1")

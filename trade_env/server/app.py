@@ -15,6 +15,9 @@ app = FastAPI()
 
 env = CoachEnv()
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 @app.post("/reset",response_model=State)
 def reset():
@@ -33,7 +36,7 @@ def step(action: Action):
     )
 
 def main():
-    uvicorn.run("server.app:app", host="0.0.0.0", port=8000)
+    uvicorn.run("server.app:app", host="0.0.0.0", port=8000, reload=False)
 
 if __name__ == "__main__":
     main()

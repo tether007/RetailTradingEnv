@@ -12,48 +12,27 @@ from trade_env.schemas.action import Action, ActionType
 
 TASK_NAME   = "trader-coach"
 BENCHMARK   = "coach-env"
-MODEL_NAME  = os.getenv("MODEL_NAME", "gpt-4o-mini")
+MODEL_NAME  = os.getenv("MODEL_NAME", "gemini-3-flash")
 API_BASE    = os.getenv("API_BASE_URL", "https://api.openai.com/v1")
 HF_TOKEN    = os.getenv("HF_TOKEN", "")
 MAX_STEPS   = 20
 
 client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY"),
+    api_key=os.getenv("GEMINI_API_KEY"),
     base_url=API_BASE
 )
 
 
 def get_llm_action(state: dict) -> int:
-    prompt = f"""You are a trading behavior coach. Given this trader state:
-- timestep: {state['timestep']}
-- price: {state['price']:.2f}
-- position: {state['position']}
-- loss_streak: {state['loss_streak']}
-- pnl: {state['pnl']:.2f}
-
-Choose intervention (respond with single integer only):
-0 = NO (do nothing)
-1 = WARN (light nudge)
-2 = REDUCE (reduce position size)
-3 = EXIT (exit position)
-4 = COOLDOWN (force break)"""
-
-    response = client.chat.completions.create(
-        model=MODEL_NAME,
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=5,
-        temperature=0.0
-    )
-
-    raw = response.choices[0].message.content.strip()
-    try:
-        action = int(raw)
-        if action not in range(5):
-            action = 0
-    except ValueError:
-        action = 0
-    return action
-
+    if state["loss_streak"] >= 3:
+        return 4
+    if state["loss_streak"] >= 2:
+        return 3
+    if state["loss_streak"] >= 1:
+        return 1
+    if state["pnl"] < -30:
+        return 2
+    return 0
 
 def log_start():
     print(f"[START] task={TASK_NAME} env={BENCHMARK} model={MODEL_NAME}")

@@ -128,9 +128,10 @@ class CoachEnv:
     
     def _get_state(self):
         return {
-            "timestep": self.t,
-            "price": self.price,
+            "timestep": self.t / 100.0,
+            "price": (self.price - 100.0) / 20.0,
             "position": self.pos,
-            "loss_streak": self.loss_streak,
-            "pnl": self.pnl
-        }   
+            "loss_streak": min(self.loss_streak, 10) / 10.0,
+            "pnl": max(-50, min(50, self.pnl)) / 50.0,
+            "overtrade_score": min(self.t, 10) / 10.0  # proxy: more trades = higher ego
+        }

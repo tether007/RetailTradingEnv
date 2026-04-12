@@ -1,7 +1,14 @@
 [project]
-name = "openenv"
+name = "trade-env"
 version = "0.1.0"
-description = "Add your description here"
+description = "Retail Trader Behavior Coach - RL agent that intervenes on bad trading behavior"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "openenv>=0.1.13",
+    "fastapi>=0.115.0",
+    "uvicorn>=0.24.0",
+    "pydantic>=2.0.0",
+    "torch>=2.0.0",
+    "python-dotenv>=1.0.0",
+]
